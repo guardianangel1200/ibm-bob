@@ -16,9 +16,9 @@
       <nav class="nav" aria-label="Primary navigation">
         <button class="nav-item active" data-view="overview"><span class="nav-icon">⌂</span><span>Manager overview</span></button>
         <button class="nav-item" data-view="coaching"><span class="nav-icon">◎</span><span>Rep coaching</span><span class="nav-badge" id="coaching-badge">3</span></button>
-        <button class="nav-item"><span class="nav-icon">◇</span><span>Opportunities</span></button>
-        <button class="nav-item"><span class="nav-icon">↗</span><span>Activity intelligence</span></button>
-        <button class="nav-item"><span class="nav-icon">◫</span><span>Reports</span></button>
+        <button class="nav-item" data-view="opportunities"><span class="nav-icon">◇</span><span>Opportunities</span></button>
+        <button class="nav-item" data-view="activity"><span class="nav-icon">↗</span><span>Activity intelligence</span></button>
+        <button class="nav-item" data-view="reports"><span class="nav-icon">◫</span><span>Reports</span></button>
       </nav>
       <div class="sidebar-bottom">
         <div class="sync-card"><div class="sync-head"><span class="live-dot"></span> Data connected</div><div class="integration-row"><span>OR</span><span>ISC</span><span>SL</span></div><small>Updated 8 min ago</small></div>
@@ -130,8 +130,140 @@
           </aside>
         </div>
       </section>
+
+      <section id="opportunities" class="view">
+        <div class="page-head">
+          <div><p class="eyebrow">PIPELINE OPPORTUNITIES</p><h1>Active opportunities</h1><p class="lede">Track and manage all opportunities across your team.</p></div>
+          <div class="head-actions"><button class="button secondary">↗ Export list</button><button class="button primary">+ New opportunity</button></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-top">
+            <div class="segmented"><button class="active">All opportunities</button><button>High value</button><button>At risk</button></div>
+            <div style="display: flex; gap: 12px;">
+              <button class="filter-btn">Stage⌄</button>
+              <button class="filter-btn">Rep⌄</button>
+              <button class="filter-btn">Sort by⌄</button>
+            </div>
+          </div>
+          <div id="opportunities-table"></div>
+        </div>
+      </section>
+
+      <section id="activity" class="view">
+        <div class="page-head">
+          <div><p class="eyebrow">ACTIVITY INTELLIGENCE</p><h1>Team activity metrics</h1><p class="lede">Monitor rep activity and engagement across all channels.</p></div>
+          <div class="head-actions"><button class="button secondary">↗ Export report</button><button class="button primary">View trends</button></div>
+        </div>
+
+        <div class="kpi-grid" id="activity-kpis"></div>
+
+        <div class="section-heading"><div><h2>Rep activity breakdown</h2><p>Last 30 days of activity by rep</p></div></div>
+        <div class="panel">
+          <div id="activity-table"></div>
+        </div>
+
+        <div class="two-col">
+          <div class="panel">
+            <div class="card-head"><div><h2>Activity trends</h2><p>Week-over-week comparison</p></div><button class="more">•••</button></div>
+            <div id="activity-trends"></div>
+          </div>
+          <div class="panel">
+            <div class="card-head"><div><h2>Top performers</h2><p>Highest activity this month</p></div><button class="more">•••</button></div>
+            <div id="top-performers"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="reports" class="view">
+        <div class="page-head">
+          <div><p class="eyebrow">REPORTS & ANALYTICS</p><h1>Weekly manager summary</h1><p class="lede">Key insights and recommended actions for this week.</p></div>
+          <div class="head-actions"><button class="button secondary">↗ Export PDF</button><button class="button primary">Schedule report</button></div>
+        </div>
+
+        <div class="alert-banner">
+          <span class="alert-icon">✦</span><div><strong>This week's focus</strong><p>3 reps need immediate coaching attention. Pipeline creation is down 14% but meeting volume is up 6%.</p></div><button>View action plan →</button>
+        </div>
+
+        <div class="section-heading"><div><h2>Executive summary</h2><p>Q3 Week 8 performance snapshot</p></div></div>
+        <div class="panel" id="executive-summary"></div>
+
+        <div class="two-col">
+          <div class="panel">
+            <div class="card-head"><div><h2>At-risk reps</h2><p>Require coaching this week</p></div><span class="nav-badge">3</span></div>
+            <div id="at-risk-list"></div>
+          </div>
+          <div class="panel">
+            <div class="card-head"><div><h2>Recommended actions</h2><p>Priority coaching interventions</p></div><span class="magic">✦</span></div>
+            <div id="recommended-actions"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="card-head"><div><h2>Opportunity creation trend</h2><p>Last 8 weeks</p></div><button class="more">•••</button></div>
+          <div id="opp-creation-chart"></div>
+        </div>
+      </section>
     </main>
   </div>
+
+  <!-- AI Coaching Assistant -->
+  <button class="ai-coach-fab" id="ai-coach-fab" aria-label="Open AI Coach">
+    <span class="ai-icon">✦</span>
+    <span class="ai-label">AI Coach</span>
+  </button>
+
+  <div class="ai-coach-drawer" id="ai-coach-drawer">
+    <div class="ai-coach-header">
+      <div class="ai-coach-title">
+        <span class="ai-icon-large">✦</span>
+        <div>
+          <h3>AI Coaching Assistant</h3>
+          <p class="ai-subtitle">Powered by IBM watsonx</p>
+        </div>
+      </div>
+      <button class="ai-close-btn" id="ai-close-btn" aria-label="Close">×</button>
+    </div>
+
+    <div class="ai-coach-body">
+      <div class="ai-messages" id="ai-messages">
+        <!-- Messages will be inserted here -->
+      </div>
+
+      <div class="ai-suggestions" id="ai-suggestions">
+        <!-- Suggested prompts will be inserted here -->
+      </div>
+    </div>
+
+    <div class="ai-coach-footer">
+      <div class="ai-input-wrapper">
+        <input
+          type="text"
+          class="ai-input"
+          id="ai-input"
+          placeholder="Ask me anything about your reps..."
+          autocomplete="off"
+        />
+        <button class="ai-send-btn" id="ai-send-btn" aria-label="Send message">
+          <span>→</span>
+        </button>
+      </div>
+      <div class="ai-footer-actions">
+        <button class="ai-clear-btn" id="ai-clear-btn">Clear conversation</button>
+      </div>
+    </div>
+
+  <!-- Opportunity Detail Modal -->
+  <div class="opp-detail-modal" id="opp-detail-modal">
+    <div class="opp-detail-overlay" onclick="closeOpportunityDetail()"></div>
+    <div class="opp-detail-container">
+      <div id="opp-detail-content">
+        <!-- Content will be inserted by JavaScript -->
+      </div>
+    </div>
+  </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
